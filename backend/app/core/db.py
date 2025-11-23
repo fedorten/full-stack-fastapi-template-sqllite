@@ -4,7 +4,13 @@ from sqlalchemy.dialects.sqlite import BLOB
 
 from app import crud
 from app.core.config import settings
-from app.models import Item, User, UserCreate  # Импортируем Item для регистрации в метаданных
+from app.models import (
+    Chat,
+    ChatMember,
+    ChatMessage,
+    User,
+    UserCreate,
+)  # Импортируем все модели для регистрации в метаданных
 
 # SQLite требует connect_args для работы в многопоточном режиме
 connect_args = {}
@@ -19,6 +25,7 @@ engine = create_engine(
 
 # Настройка для работы с UUID в SQLite
 if settings.SQLALCHEMY_DATABASE_URI.startswith("sqlite"):
+
     @event.listens_for(engine, "connect")
     def set_sqlite_pragma(dbapi_conn, connection_record):
         cursor = dbapi_conn.cursor()
